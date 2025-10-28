@@ -65,6 +65,35 @@ export default function Home() {
     }
 
     getApolloClient();
+
+    // posting to LENS
+    // same can be used for PUT
+    async function createData () {
+        // Params to be send to POST method
+        const payload = {
+          lead_name: "John Doe",
+          status: "Open",
+          email: "john@example.com",
+        };
+
+        const res = await fetch("/api/create-example", {
+          method: "POST", //this is must without this, the request will be Consider as GET
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload), //this will be accessed through req in POST api
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to post data");
+        }
+
+        const data = await res.json();
+        console.log("post response:", data);
+    };
+
+    createData();
+
   }, []);
 
   if (loading) return <p className="p-6">Loading...</p>;
